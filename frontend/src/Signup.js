@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { post } from "../../backend/app";
 
-const Singup = () => {
+const Signup = () => {
   const [username, setUsername] = useState("");
   const [nicname, setNicname] = useState("");
   const [password, setPassword] = useState("");
@@ -54,3 +54,5 @@ const Singup = () => {
     </form>
   );
 };
+
+export default Signup;

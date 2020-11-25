@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import Home from "./Home";
+import Login from "./Login";
+import Signup from "./Signup";
+import Profile from "./Profile";
 
 //class App extends Component {
 // state = {

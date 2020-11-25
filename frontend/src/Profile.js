@@ -24,3 +24,5 @@ const Profile = (login_info) => {
     </div>
   );
 };
+
+export default Profile;
