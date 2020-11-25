@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 //import { post } from "../../backend/app";
+import { post } from "axios";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
