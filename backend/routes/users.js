@@ -97,14 +97,28 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-router.post(
-  "/login",
-  passport.authenticate("local-login", {
-    successRedirect: "/profile",
-    failureRedirect: "/login",
-    failureFlash: true,
-  })
-);
+router.post("/login", function (req, res, next) {
+  passport.authenticate("local-login", function (err, user, info) {
+    if (err) {
+      console.log(err);
+      return next(err);
+    }
+
+    if (user) {
+      console.log("req.user : " + JSON.stringify(user));
+      let json = JSON.parse(JSON.stringify(user));
+
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+      });
+    } else {
+      console.log("login fail!!!!!!!!!!!!!!!");
+      res.send([]);
+    }
+  })(req, res, next);
+});
 
 router.post(
   "/signup",
