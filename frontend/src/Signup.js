@@ -11,24 +11,24 @@ const Signup = () => {
   const onChangeNicname = (e) => setNicname(e.target.value);
   const onChangePassword = (e) => setPassword(e.target.value);
 
-  const handleFormSubmit = () => {
-    const url = "/signup";
-    const formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-    formData.append("nicname", nicname);
+  // const handleFormSubmit = () => {
+  //   const url = "/signup";
+  //   const formData = new FormData();
+  //   formData.append("username", username);
+  //   formData.append("password", password);
+  //   formData.append("nicname", nicname);
 
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    };
+  //   const config = {
+  //     headers: {
+  //       "content-type": "multipart/form-data",
+  //     },
+  //   };
 
-    return post(url, formData, config);
-  };
+  //   return post(url, formData, config);
+  // };
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form action="http://localhost:3001/signup" method="post">
       <h1>회원가입</h1>
       이메일:
       <input
