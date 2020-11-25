@@ -1,24 +1,25 @@
+require("dotenv").config();
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var passport = require("passport");
+var flash = require("connect-flash");
 
 const mongoose = require("mongoose");
 const mongooseAutoInc = require("mongoose-auto-increment");
-const UserModel = require("./models/user");
+//const UserModel = require("./models/user");
 
-mongoose.connect("mongodb://localhost:27017/websysprojDB", {
+mongoose.connect("mongodb://localhost:27017/local", {
   useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 mongooseAutoInc.initialize(mongoose.connection);
 
-var indexRouter = require("./routes/index");
+//var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-const { emit } = require("process");
 
 var app = express();
 
@@ -35,7 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.use("/", indexRouter);
+//app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler

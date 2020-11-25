@@ -2,6 +2,7 @@ var express = require("express");
 const passport = require("passport");
 var flash = require("connect-flash");
 var router = express.Router();
+var UserModel = require("../models/user");
 
 let LocalStrategy = require("passport-local").Strategy;
 

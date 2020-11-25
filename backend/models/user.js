@@ -1,14 +1,22 @@
 const mongoose = require("mongoose");
 const mongooseAutoInc = require("mongoose-auto-increment");
 
-let UserSchma = new mongoose.Schema({
-  email: { type: String, default: "", required: true, unique: true },
-  password: { type: String, required: true, default: "" },
-  name: { type: String, index: "hashed", default: "" },
-  created_at: { type: Date, index: { unique: false }, default: Date.now },
-  deleted_at: { type: Date, index: { unique: false } },
+const UserSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  name: { type: String },
+  created_at: { type: Date, default: Date.now },
+  deleted_at: { type: Date },
+  user_id: { type: Number, default: 0, unique: true },
 });
 
-movieSchema.plugin(mongooseAutoInc.plugin, "user");
+// mongoose.connect("mongodb://localhost:27017/local", {
+//   useFindAndModify: false,
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+// mongooseAutoInc.initialize(mongoose.connection);
 
-module.exports = mongoose.model("user", userSchema);
+UserSchema.plugin(mongooseAutoInc.plugin, "user");
+
+module.exports = mongoose.model("user", UserSchema);
