@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+axios.defaults.withCredentials = true; // 기존에 해당 설정으로 cors 에러가 나게 한 부분
 
 const Profile = () => {
   const [user, setUser] = useState("");
@@ -14,7 +15,12 @@ const Profile = () => {
     fetchData();
   }, []);
 
-  return <div>{user}</div>;
+  return (
+    <>
+      <h1>프로필화면</h1>
+      <div>{user}</div>
+    </>
+  );
 };
 
 // const Profile = (login_info) => {

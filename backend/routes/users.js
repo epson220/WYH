@@ -102,7 +102,7 @@ passport.deserializeUser(function (user, done) {
 router.post(
   "/login",
   passport.authenticate("local-login", {
-    successRedirect: "http://localhost:3000/profile",
+    successRedirect: "http://localhost:3001/profile",
     failureRedirect: "http://localhost:3000/login",
     failureFlash: true,
   })
@@ -111,7 +111,7 @@ router.post(
 router.post(
   "/signup",
   passport.authenticate("local-signup", {
-    successRedirect: "http://localhost:3000/profile",
+    successRedirect: "http://localhost:3001/profile",
     failureRedirect: "http://localhost:3000/signup",
     failureFlash: true,
   })
