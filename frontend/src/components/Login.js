@@ -29,7 +29,7 @@ const Login = () => {
       이메일:
       <input
         type="text"
-        name="username"
+        name="email"
         value={username}
         onChange={onChangeUsername}
       ></input>

@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { post } from "axios";
 
 const Signup = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [nicname, setNicname] = useState("");
   const [password, setPassword] = useState("");
 
-  const onChangeUsername = (e) => setUsername(e.target.value);
+  const onChangeEmail = (e) => setEmail(e.target.value);
   const onChangeNicname = (e) => setNicname(e.target.value);
   const onChangePassword = (e) => setPassword(e.target.value);
 
@@ -33,9 +33,9 @@ const Signup = () => {
       이메일:
       <input
         type="text"
-        name="username"
-        value={username}
-        onChange={onChangeUsername}
+        name="email"
+        value={email}
+        onChange={onChangeEmail}
       ></input>
       비밀번호:
       <input

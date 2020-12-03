@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import Home from "./Home";
-import Login from "./Login";
-import Signup from "./Signup";
-import Profile from "./Profile";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Profile from "./components/Profile";
+import Board from "./components/Board";
 
 //class App extends Component {
 // state = {
@@ -35,6 +36,7 @@ const App = () => {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/profile" component={Profile} />
+      <Route path="/Board" component={Board} />
     </div>
   );
 };

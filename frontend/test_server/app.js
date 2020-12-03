@@ -114,10 +114,10 @@ app.set("view engine", "jade");
 app.use(cookieParser());
 app.use(
   expressSession({
-    secret: "me key",
+    //secret: "me key",
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 30000, secure: false, httpOnly: false },
+    //cookie: { maxAge: 30000, secure: false, httpOnly: false },
   })
 );
 //app.use(cors({ origin: "http://localhost:3000", credentials: true }));
@@ -186,7 +186,7 @@ passport.use(
         if (user) {
           console.log("기존에 계정이 있음.");
           return done(
-            ull,
+            null,
             false,
             req.flash("signupMessage", "계정이 이미 있습니다.")
           );
@@ -237,18 +237,18 @@ var router = express.Router();
 //   })
 // );
 
-// router.route("/signup").post(
-//   passport.authenticate("local-signup", {
-//     successRedirect: "/profile",
-//     failureRedirect: "http://localhost:3000/signup",
-//     failureFlash: true,
-//   })
-// );
+router.route("/signup").post(
+  passport.authenticate("local-signup", {
+    successRedirect: "/profile",
+    failureRedirect: "http://localhost:3000/signup",
+    failureFlash: true,
+  })
+);
 
-router.route("/signup").post(function (req, res, next) {
-  console.dir(req.body);
-  console.dir(req.user);
-});
+// router.route("/signup").post(function (req, res, next) {
+//   console.dir(req.body);
+//   console.dir(req.user);
+// });
 
 // router.route("/signup").post(function (req, res) {
 //   console.log(
