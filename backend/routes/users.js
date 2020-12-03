@@ -196,6 +196,7 @@ router.get("/board", function (req, res) {
   console.log("/board 패스 요청됨.");
   // console.log("세션:" + req.session.user);
   // console.dir(req.session);
+  res.send("axios test");
 });
 
 module.exports = router;

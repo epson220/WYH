@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Link } from "react-router-dom";
+import axios from "axios";
 
 const Board = () => {
+  const [response, setResponse] = useState(null);
+
+  useEffect(async () => {
+    try {
+      console.log("axios 실행");
+      let res = await axios.get("http://localhost:30001/board");
+      console.log(res);
+      setResponse(res);
+    } catch (err) {}
+  });
+
   return (
     <div>
       <button>

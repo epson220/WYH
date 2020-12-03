@@ -42,7 +42,9 @@ app.use(
     //cookie: { maxAge: 30000, secure: false, httpOnly: false },
   })
 );
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+//app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors());
+app.options("*", cors());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(passport.initialize());
 app.use(passport.session());
