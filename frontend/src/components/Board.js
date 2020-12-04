@@ -30,7 +30,7 @@ const Board = () => {
       </form>
       <ol>
         {response.map((res) => (
-          <li>
+          <li key={res._id}>
             <Link to="/detailBoard">
               {res.title} {res.created_at}
             </Link>
