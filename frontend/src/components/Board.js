@@ -6,18 +6,24 @@ const Board = () => {
   const [response, setResponse] = useState([]);
 
   useEffect(async () => {
-    try {
-      console.log("axios 실행");
-      let res = [];
-      res = await axios.get("http://localhost:3001/board");
-      console.log(res);
-      setResponse(res.data);
-      console.log(response);
-    } catch (err) {
-      console.log("axios err");
-      console.log(err);
+    // try {
+    //   console.log("axios 실행");
+    //   let res = [];
+    //   res = await axios.get("http://localhost:3001/board");
+    //   console.log(res);
+    //   setResponse(res.data);
+    //   console.log(response);
+    // } catch (err) {
+    //   console.log("axios err");
+    //   console.log(err);
+    // }
+    async function fetchData() {
+      const result = await axios.get("http://localhost:3001/board");
+      console.log(result.data);
+      setResponse(result.data);
     }
-  });
+    fetchData();
+  }, []);
 
   return (
     <div>
