@@ -3,6 +3,10 @@ const passport = require("passport");
 var flash = require("connect-flash");
 var router = express.Router();
 var UserModel = require("../models/user");
+var BoardModel = require("../models/board");
+var cors = require("cors");
+const { ConnectionStates } = require("mongoose");
+var path = require("path");
 
 // let LocalStrategy = require("passport-local").Strategy;
 
@@ -165,7 +169,7 @@ router.post("/login", async function (req, res) {
 
     if (found_user) {
       console.log("이메일과 비번이 일치하는 사용자 찾음 ");
-      res.redirect("/board");
+      res.redirect("http://localhost:3000/board");
     } else {
       console.log("이메일과 비밀번호를 다시 확인해주세요.");
       res.redirect("http://localhost:3000/login");
@@ -192,11 +196,107 @@ router.get("/logout", function (req, res) {
   }
 });
 
-router.get("/board", function (req, res) {
+router.get("/board", async function (req, res) {
   console.log("/board 패스 요청됨.");
   // console.log("세션:" + req.session.user);
   // console.dir(req.session);
-  res.send("axios test");
+  // try {
+  //   let boards = await BoardModel.find({});
+  //   console.log(boards);
+  //   res.send(boards);
+  // } catch (err) {
+  //   console.log(err);
+  // }
+
+  BoardModel.find({}, function (err, results) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (results.length > 0) {
+      console.log(results);
+      res.send(results);
+    } else {
+      res.send(null);
+    }
+  });
+});
+
+var multer = require("multer");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "uploads");
+  },
+  filename: function (req, file, callback) {
+    var extension = path.extname(file.originalname);
+    var basename = path.basename(file.originalname, extension);
+    callback(null, basename + Date.now() + extension);
+  },
+});
+
+var upload = multer({
+  storage: storage,
+});
+
+router.post("/writeBoard", upload.array("photo", 1), function (req, res) {
+  console.log("/writeBoard 호출됨.");
+
+  try {
+    var files = req.files;
+
+    if (files.length > 0) {
+      console.log(files[0]);
+    } else {
+      console.log("업로드된 파일 x");
+    }
+
+    let originalname = "";
+    let filename = "";
+    let mimetype = "";
+    let size = 0;
+
+    if (Array.isArray(files)) {
+      console.log("배열에 들어있는 파일 갯수 : %d", files.length);
+
+      for (let i = 0; i < files.length; i++) {
+        originalname = files[i].originalname;
+        filename = files[i].filename;
+        mimetype = files[i].mimetype;
+        size = files[i].size;
+      }
+    } else {
+      console.log("파일 개수 : 1");
+      originalname = files[0].originalname;
+      filename = files[0].name;
+      mimetype = files[0].mimetype;
+      size = files[0].size;
+    }
+
+    console.log(
+      "현재 파일 정보 : " +
+        originalname +
+        ", " +
+        filename +
+        ", " +
+        mimetype +
+        ", " +
+        size
+    );
+
+    let save_board = new BoardModel({
+      title: req.body.title,
+      content: req.body.content,
+      hobby: req.body.hobby,
+      picture: filename,
+    });
+
+    save_board.save();
+    console.log("게시글 저장 완료");
+    res.redirect("http://localhost:3000/board");
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

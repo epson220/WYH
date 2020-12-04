@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Profile from "./components/Profile";
 import Board from "./components/Board";
+import WriteBoard from "./components/WriteBoard";
 
 //class App extends Component {
 // state = {
@@ -36,7 +37,8 @@ const App = () => {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/profile" component={Profile} />
-      <Route path="/Board" component={Board} />
+      <Route path="/board" component={Board} />
+      <Route path="/writeBoard" component={WriteBoard} />
     </div>
   );
 };

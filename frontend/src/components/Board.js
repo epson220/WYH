@@ -3,15 +3,20 @@ import { Route, Link } from "react-router-dom";
 import axios from "axios";
 
 const Board = () => {
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState([]);
 
   useEffect(async () => {
     try {
       console.log("axios 실행");
-      let res = await axios.get("http://localhost:30001/board");
+      let res = [];
+      res = await axios.get("http://localhost:3001/board");
       console.log(res);
-      setResponse(res);
-    } catch (err) {}
+      setResponse(res.data);
+      console.log(response);
+    } catch (err) {
+      console.log("axios err");
+      console.log(err);
+    }
   });
 
   return (
@@ -23,7 +28,15 @@ const Board = () => {
         <input type="text" name="searchKeyword"></input>
         <button type="submit">게시글검색</button>
       </form>
-      <ol></ol>
+      <ol>
+        {response.map((res) => (
+          <li>
+            <Link to="/detailBoard">
+              {res.title} {res.created_at}
+            </Link>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 };
