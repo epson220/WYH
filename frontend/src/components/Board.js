@@ -18,6 +18,7 @@ const Board = () => {
     //   console.log(err);
     // }
     async function fetchData() {
+      console.log("react board get axios 호출");
       const result = await axios.get("http://localhost:3001/board");
       console.log(result.data);
       setResponse(result.data);
@@ -37,7 +38,12 @@ const Board = () => {
       <ol>
         {response.map((res) => (
           <li key={res._id}>
-            <Link to="/detailBoard">
+            {/* <Link to={`/detailBoard/${res._id}`}>
+              <div onClick={handleOnClick(res._id)}>
+                {res.title} {res.created_at}
+              </div>
+            </Link> */}
+            <Link to={`/detailBoard/${res._id}`}>
               {res.title} {res.created_at}
             </Link>
           </li>

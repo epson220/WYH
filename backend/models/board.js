@@ -7,6 +7,7 @@ const BoardSchema = new mongoose.Schema({
   hobby: { type: String },
   created_at: { type: Date, default: Date.now },
   picture: { type: String },
+  writer: { type: String },
 });
 
 // mongoose.connect("mongodb://localhost:27017/local", {

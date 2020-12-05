@@ -289,11 +289,28 @@ router.post("/writeBoard", upload.array("photo", 1), function (req, res) {
       content: req.body.content,
       hobby: req.body.hobby,
       picture: filename,
+      writer: req.session.user.id,
     });
 
     save_board.save();
     console.log("게시글 저장 완료");
     res.redirect("http://localhost:3000/board");
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/getDetailBoard", async function (req, res) {
+  let id = req.body.id;
+  console.log("/getDetailBoard호츨됨." + req.body.id);
+
+  try {
+    let detailBoard = await BoardModel.findOne({ _id: id });
+
+    console.log("detailBoard: ");
+    console.log(detailBoard);
+
+    res.send(detailBoard);
   } catch (err) {
     console.log(err);
   }

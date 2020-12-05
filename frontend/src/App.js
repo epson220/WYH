@@ -6,6 +6,7 @@ import Signup from "./components/Signup";
 import Profile from "./components/Profile";
 import Board from "./components/Board";
 import WriteBoard from "./components/WriteBoard";
+import DetailBoard from "./components/DetailBoard";
 
 //class App extends Component {
 // state = {
@@ -39,6 +40,7 @@ const App = () => {
       <Route path="/profile" component={Profile} />
       <Route path="/board" component={Board} />
       <Route path="/writeBoard" component={WriteBoard} />
+      <Route path="/detailBoard/:board_id" component={DetailBoard} />
     </div>
   );
 };
