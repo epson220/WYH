@@ -241,11 +241,12 @@ var upload = multer({
   storage: storage,
 });
 
-router.post("/writeBoard", upload.array("photo", 1), function (req, res) {
+router.post("/writeBoard", upload.array("photo", 1), async function (req, res) {
   console.log("/writeBoard 호출됨.");
+  console.dir(req.body);
 
   try {
-    var files = req.files;
+    let files = req.files;
 
     if (files.length > 0) {
       console.log(files[0]);
@@ -369,10 +370,12 @@ router.post(
   "/writeProfile",
   upload.array("photo", 1),
   async function (req, res) {
-    console.log("/writeProfile post 호출됨." + req.body);
+    console.log("/writeProfile post 호출됨.");
+    console.dir(req.body);
 
     try {
-      var files = req.files;
+      let files = req.files;
+      console.dir(files);
 
       if (files.length > 0) {
         console.log(files[0]);
@@ -413,20 +416,55 @@ router.post(
           size
       );
 
-      let updated = await ProfileModel.findOneAndUpdate(
-        { user_email: req.session.user.id },
-        {
+      let user = await UserModel.findOne({ email: req.session.user.id });
+      console.log(user);
+      let prof = await ProfileModel.findOne({
+        user_email: req.session.user.id,
+      });
+      console.log(prof);
+
+      if (prof) {
+        if (filename === "") {
+          let updated1 = await ProfileModel.findOneAndUpdate(
+            { user_email: req.session.user.id },
+            {
+              profile_photo: prof.profile_photo,
+              self_intro: req.body.self_intro,
+              user_id: user._id,
+              user_email: req.session.user.id,
+              age: req.body.age,
+              location: req.body.loc,
+            },
+            { retrurnOriginal: false }
+          );
+          console.log("프로필 업데이트 성공1111!");
+        } else {
+          let update2 = await ProfileModel.findOneAndUpdate(
+            { user_email: req.session.user.id },
+            {
+              profile_photo: filename,
+              self_intro: req.body.self_intro,
+              user_id: user._id,
+              user_email: req.session.user.id,
+              age: req.body.age,
+              location: req.body.loc,
+            },
+            { retrurnOriginal: false }
+          );
+          console.log("프로필 업데이트 성공222!!!");
+        }
+      } else {
+        let p = new ProfileModel({
           profile_photo: filename,
           self_intro: req.body.self_intro,
-          user_id: req.body.uid,
-          user_email: req.body.uem,
+          user_id: user._id,
+          user_email: req.session.user.id,
           age: req.body.age,
           location: req.body.loc,
-        },
-        { retrurnOriginal: false }
-      );
-      console.log("프로필 수정완료!!!");
-
+        });
+        p.save();
+        console.log("프로필 저장 성공!!");
+      }
       res.redirect("http://localhost:3000/board");
     } catch (err) {
       console.log(err);

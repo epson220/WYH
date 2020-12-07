@@ -40,7 +40,7 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/profile" component={Profile} />
-        <Route path="/makeProfile" compenent={WriteProfile} exact={true} />
+        <Route path="/updateProf" component={WriteProfile} />
         <Route path="/board" component={Board} />
         <Route path="/writeBoard" component={WriteBoard} exact={true} />
         <Route path="/detailBoard/:board_id" component={DetailBoard} />
