@@ -7,6 +7,7 @@ import Profile from "./components/Profile";
 import Board from "./components/Board";
 import WriteBoard from "./components/WriteBoard";
 import DetailBoard from "./components/DetailBoard";
+import WriteProfile from "./components/WriteProfile";
 
 //class App extends Component {
 // state = {
@@ -41,6 +42,7 @@ const App = () => {
       <Route path="/board" component={Board} />
       <Route path="/writeBoard" component={WriteBoard} />
       <Route path="/detailBoard/:board_id" component={DetailBoard} />
+      <Route path="/writeProfile" compenent={WriteProfile} />
     </div>
   );
 };

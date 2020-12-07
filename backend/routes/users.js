@@ -5,6 +5,7 @@ var router = express.Router();
 var UserModel = require("../models/user");
 var BoardModel = require("../models/board");
 var CommentModel = require("../models/comment");
+var ProfileModel = require("../models/profile");
 var cors = require("cors");
 const { ConnectionStates } = require("mongoose");
 var path = require("path");
@@ -346,5 +347,91 @@ router.post("/writeComment", function (req, res) {
     console.log(err);
   }
 });
+
+router.get("/getProfileInfo", async function (req, res) {
+  console.log("/getProfileInfo 호출");
+  try {
+    let email = req.session.user.id;
+
+    let p = await ProfileModel.find({ user_email: email });
+
+    if (p) {
+      res.send(p);
+    } else {
+      res.send(null);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post(
+  "/writeProfile",
+  upload.array("photo", 1),
+  async function (req, res) {
+    console.log("/writeProfile post 호출됨." + req.body);
+
+    try {
+      var files = req.files;
+
+      if (files.length > 0) {
+        console.log(files[0]);
+      } else {
+        console.log("업로드된 파일 x");
+      }
+
+      let originalname = "";
+      let filename = "";
+      let mimetype = "";
+      let size = 0;
+
+      if (Array.isArray(files)) {
+        console.log("배열에 들어있는 파일 갯수 : %d", files.length);
+
+        for (let i = 0; i < files.length; i++) {
+          originalname = files[i].originalname;
+          filename = files[i].filename;
+          mimetype = files[i].mimetype;
+          size = files[i].size;
+        }
+      } else {
+        console.log("파일 개수 : 1");
+        originalname = files[0].originalname;
+        filename = files[0].name;
+        mimetype = files[0].mimetype;
+        size = files[0].size;
+      }
+
+      console.log(
+        "현재 파일 정보 : " +
+          originalname +
+          ", " +
+          filename +
+          ", " +
+          mimetype +
+          ", " +
+          size
+      );
+
+      let updated = await ProfileModel.findOneAndUpdate(
+        { user_email: req.session.user.id },
+        {
+          profile_photo: filename,
+          self_intro: req.body.self_intro,
+          user_id: req.body.uid,
+          user_email: req.body.uem,
+          age: req.body.age,
+          location: req.body.loc,
+        },
+        { retrurnOriginal: false }
+      );
+      console.log("프로필 수정완료!!!");
+
+      res.redirect("http://localhost:3000/board");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
 
 module.exports = router;
