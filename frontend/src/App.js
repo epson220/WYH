@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -35,14 +35,24 @@ import WriteProfile from "./components/WriteProfile";
 const App = () => {
   return (
     <div>
-      <Route path="/" component={Home} exact={true} />
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/profile" component={Profile} />
-      <Route path="/board" component={Board} />
-      <Route path="/writeBoard" component={WriteBoard} />
-      <Route path="/detailBoard/:board_id" component={DetailBoard} />
-      <Route path="/writeProfile" compenent={WriteProfile} />
+      <Switch>
+        <Route path="/" component={Home} exact={true} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/profile" component={Profile} />
+        <Route path="/makeProfile" compenent={WriteProfile} exact={true} />
+        <Route path="/board" component={Board} />
+        <Route path="/writeBoard" component={WriteBoard} exact={true} />
+        <Route path="/detailBoard/:board_id" component={DetailBoard} />
+        <Route
+          render={({ location }) => (
+            <div>
+              <h2>이 페이지는 존재하지않습니다.</h2>
+              <p>{location.pathname}</p>
+            </div>
+          )}
+        />
+      </Switch>
     </div>
   );
 };
