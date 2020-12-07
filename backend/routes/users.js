@@ -4,6 +4,7 @@ var flash = require("connect-flash");
 var router = express.Router();
 var UserModel = require("../models/user");
 var BoardModel = require("../models/board");
+var CommentModel = require("../models/comment");
 var cors = require("cors");
 const { ConnectionStates } = require("mongoose");
 var path = require("path");
@@ -302,6 +303,7 @@ router.post("/writeBoard", upload.array("photo", 1), function (req, res) {
 
 router.post("/getDetailBoard", async function (req, res) {
   let id = req.body.id;
+  let d = {};
   console.log("/getDetailBoard호츨됨." + req.body.id);
 
   try {
@@ -310,7 +312,36 @@ router.post("/getDetailBoard", async function (req, res) {
     console.log("detailBoard: ");
     console.log(detailBoard);
 
-    res.send(detailBoard);
+    let boardComments = await CommentModel.find({ board_id: id });
+    console.log("boardComments: ");
+    console.log(boardComments);
+
+    let d = { detailBoard, boardComments };
+
+    res.status(200).send(d);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/writeComment", function (req, res) {
+  console.log(
+    "/writeComment post 호출" +
+      req.body.comment +
+      req.body.writer +
+      req.body.boardId
+  );
+
+  try {
+    let comment = new CommentModel({
+      input: req.body.comment,
+      writer: req.body.writer,
+      board_id: req.body.boardId,
+    });
+
+    comment.save();
+    console.log("댓글 작성 완료");
+    res.redirect("http://localhost:3000/detailBoard/" + req.body.boardId);
   } catch (err) {
     console.log(err);
   }

@@ -13,7 +13,17 @@ const DetailBoard = ({ match }) => {
     created_at: "",
     _id: "",
   });
+  // const [Comments, setComments] = useState({
+  //   _id: "",
+  //   board_id: "",
+  //   writer: "",
+  //   input: "",
+  // });
+  const [Comments, setComments] = useState([]);
   const [Imgurl, setImgurl] = useState("");
+  const [Comment, setComment] = useState("");
+
+  const onChangeComment = (e) => setComment(e.target.value);
 
   console.dir(match.params);
   console.log("board_id : " + board_id);
@@ -26,9 +36,12 @@ const DetailBoard = ({ match }) => {
       });
       console.log("res : ");
       console.dir(res);
-      setBoard(res.data);
+      setBoard(res.data.detailBoard);
       console.log(Board);
-      setImgurl("http://localhost:3001/uploads/" + res.data.picture);
+      setComments(res.data.boardComments);
+      setImgurl(
+        "http://localhost:3001/uploads/" + res.data.detailBoard.picture
+      );
     }
     fetchData();
   }, []);
@@ -42,6 +55,29 @@ const DetailBoard = ({ match }) => {
       </div>
       <div>
         <img src={Imgurl} style={{ width: "600px", height: "600px" }}></img>
+      </div>
+      <div>
+        <form method="post" action="http://localhost:3001/writeComment">
+          <input
+            type="text"
+            placeholder="댓글을 작성해 주세요."
+            name="comment"
+            value={Comment}
+            onChange={onChangeComment}
+          ></input>
+          <input type="hidden" name="writer" value={Board.writer}></input>
+          <input type="hidden" name="boardId" value={Board._id}></input>
+          <button type="submit">작성완료</button>
+        </form>
+      </div>
+      <div>
+        <ol>
+          {Comments.map((c) => (
+            <li key={c._id}>
+              {c.input} {c.writer}
+            </li>
+          ))}
+        </ol>
       </div>
     </>
   );
