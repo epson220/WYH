@@ -42,8 +42,10 @@ const WriteProfile = () => {
       let res = await axios.get("http://localhost:3001/getProfileInfo");
       console.log(res);
       console.dir(res.data[0]);
-      setProfile(res.data[0]);
-      setImg("http://localhost:3001/uploads/" + res.data[0].profile_photo);
+      if (res.data[0] != undefined) {
+        setProfile(res.data[0]);
+        setImg("http://localhost:3001/uploads/" + res.data[0].profile_photo);
+      }
     }
     fetchData();
   }, []);
