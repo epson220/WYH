@@ -39,7 +39,7 @@ const App = () => {
         <Route path="/" component={Home} exact={true} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/profile" component={Profile} />
+        <Route path="/profile/:email" component={Profile} />
         <Route path="/updateProf" component={WriteProfile} />
         <Route path="/board" component={Board} />
         <Route path="/writeBoard" component={WriteBoard} exact={true} />

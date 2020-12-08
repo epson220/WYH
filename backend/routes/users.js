@@ -337,7 +337,7 @@ router.post("/writeComment", function (req, res) {
   try {
     let comment = new CommentModel({
       input: req.body.comment,
-      writer: req.body.writer,
+      writer: req.session.user.id,
       board_id: req.body.boardId,
     });
 
@@ -471,5 +471,20 @@ router.post(
     }
   }
 );
+
+router.post("/profile", async function (req, res) {
+  console.log("/profile post 요청" + req.body.email);
+  try {
+    let p = await ProfileModel.findOne({ user_email: req.body.email });
+    let u = await UserModel.findOne({ email: req.body.email });
+    console.log(p);
+    console.log(u);
+    let uInfo = { p, u };
+
+    res.send(uInfo);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports = router;

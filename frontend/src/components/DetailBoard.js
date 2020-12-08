@@ -48,7 +48,9 @@ const DetailBoard = ({ match }) => {
 
   return (
     <>
-      <Link to="/profile">작성자 : {Board.writer}</Link>
+      <Link to="/board">홈으로</Link>
+      <br></br>
+      <Link to={`/profile/${Board.writer}`}>작성자 : {Board.writer}</Link>
       <h3 style={{ width: "50%", border: "1px solid black" }}>{Board.title}</h3>
       <div style={{ width: "80%", border: "1px solid black" }}>
         {Board.content}
@@ -74,7 +76,7 @@ const DetailBoard = ({ match }) => {
         <ol>
           {Comments.map((c) => (
             <li key={c._id}>
-              {c.input} {c.writer}
+              {c.input} <Link to={`/profile/${c.writer}`}>{c.writer}</Link>
             </li>
           ))}
         </ol>
