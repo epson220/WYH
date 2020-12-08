@@ -4,6 +4,11 @@ import axios from "axios";
 
 const Board = () => {
   const [response, setResponse] = useState([]);
+  const [input, setInput] = useState("");
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+    console.log(input);
+  };
 
   useEffect(async () => {
     // try {
@@ -19,12 +24,26 @@ const Board = () => {
     // }
     async function fetchData() {
       console.log("react board get axios 호출");
-      const result = await axios.get("http://localhost:3001/board");
+      const result = await axios.get("http://localhost:3001/board", {
+        input: input,
+      });
       console.log(result.data);
       setResponse(result.data);
     }
     fetchData();
   }, []);
+
+  const handleOnSubmit = () => {
+    async function fetchData2() {
+      console.log("react board search axios 호출");
+      const result2 = await axios.post("http://localhost:3001/searchBoard", {
+        input: input,
+      });
+      console.log(result2.data);
+      setResponse(result2.data);
+    }
+    fetchData2();
+  };
 
   return (
     <div>
@@ -34,10 +53,16 @@ const Board = () => {
       <button>
         <Link to="/updateProf">프로필 작성</Link>
       </button>
-      <form action="http://localhost:3001/searchBoard" method="post">
-        <input type="text" name="searchKeyword"></input>
-        <button type="submit">게시글검색</button>
-      </form>
+
+      <input
+        type="text"
+        //name="searchKeyword"
+        onChange={handleInputChange}
+      ></input>
+      <button type="submit" onClick={handleOnSubmit}>
+        게시글검색
+      </button>
+
       <ol>
         {response.map((res) => (
           <li key={res._id}>

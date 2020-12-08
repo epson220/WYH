@@ -487,4 +487,20 @@ router.post("/profile", async function (req, res) {
   }
 });
 
+router.post("/searchBoard", async function (req, res) {
+  console.log("/searchBoard post 요청");
+  console.dir(req.body);
+
+  try {
+    let searched = await BoardModel.find({
+      title: { $regex: req.body.input },
+    });
+    console.log(searched);
+
+    res.send(searched);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
