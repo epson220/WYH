@@ -39,9 +39,18 @@ const DetailBoard = ({ match }) => {
       setBoard(res.data.detailBoard);
       console.log(Board);
       setComments(res.data.boardComments);
-      setImgurl(
-        "http://localhost:3001/uploads/" + res.data.detailBoard.picture
-      );
+      if (
+        res.data.detailBoard.picture != "" &&
+        res.data.detailBoard.picture != null
+      ) {
+        console.log("이미지있음");
+        setImgurl(
+          "http://localhost:3001/uploads/" + res.data.detailBoard.picture
+        );
+      } else {
+        console.log("이미지없음");
+        setImgurl("");
+      }
     }
     fetchData();
   }, []);

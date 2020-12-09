@@ -9,6 +9,11 @@ const Board = () => {
     setInput(e.target.value);
     console.log(input);
   };
+  const [choice, setChoice] = useState("ex/sp");
+  const handleChangeSelect = (e) => {
+    setChoice(e.target.value);
+    console.log(choice);
+  };
 
   useEffect(async () => {
     // try {
@@ -45,6 +50,18 @@ const Board = () => {
     fetchData2();
   };
 
+  const handleOnSubmit2 = () => {
+    async function fetchData3() {
+      console.log("react board search axios2 호출");
+      const result3 = await axios.post("http://localhost:3001/searchHobby", {
+        hobby: choice,
+      });
+      console.log(result3.data);
+      setResponse(result3.data);
+    }
+    fetchData3();
+  };
+
   return (
     <div>
       <button>
@@ -62,6 +79,37 @@ const Board = () => {
       <button type="submit" onClick={handleOnSubmit}>
         게시글검색
       </button>
+
+      {/* <form
+        action="http://localhost:3001/searchHobby"
+        method="post"
+        onSubmit={handleOnSubmit2}
+      > */}
+      <select name="choice" onChange={handleChangeSelect}>
+        <option value="" disabled>
+          검색할 취미를 선택하세요.
+        </option>
+        <option value="ex/sp">운동/스포츠</option>
+        <option value="out/tr">아웃도어/여행</option>
+        <option value="bk/wr">인문학/책/글</option>
+        <option value="fg/lg">외국/언어</option>
+        <option value="cul/pfm">문화/공연</option>
+        <option value="mu/inst">음악/악기</option>
+        <option value="cft">공예/만들기</option>
+        <option value="dan">댄스/무용</option>
+        <option value="volu">봉사활동</option>
+        <option value="par">사교/인맥</option>
+        <option value="game">게임/오락</option>
+        <option value="pic">사진/편집/촬영/영상</option>
+        <option value="inv">제테크/투자</option>
+        <option value="cok/fod">요리/음식/맛집</option>
+        <option value="fas/bea">패션/뷰티/코디</option>
+        <option value="art/draw">미술/그림</option>
+      </select>
+      <button type="submit" onClick={handleOnSubmit2}>
+        게시글검색
+      </button>
+      {/* </form> */}
 
       <ol>
         {response.map((res) => (

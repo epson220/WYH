@@ -503,4 +503,18 @@ router.post("/searchBoard", async function (req, res) {
   }
 });
 
+router.post("/searchHobby", async function (req, res) {
+  console.log("/searchHobby post 요청");
+  console.dir(req.body);
+
+  try {
+    let searched = await BoardModel.find({ hobby: req.body.hobby });
+    console.log(searched);
+
+    res.send(searched);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
