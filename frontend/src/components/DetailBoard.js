@@ -65,7 +65,9 @@ const DetailBoard = ({ match }) => {
         {Board.content}
       </div>
       <div>
-        <img src={Imgurl} style={{ width: "600px", height: "600px" }}></img>
+        {Imgurl && (
+          <img src={Imgurl} style={{ width: "600px", height: "600px" }}></img>
+        )}
       </div>
       <div>
         <form method="post" action="http://localhost:3001/writeComment">
