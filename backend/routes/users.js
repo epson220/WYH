@@ -6,6 +6,7 @@ var UserModel = require("../models/user");
 var BoardModel = require("../models/board");
 var CommentModel = require("../models/comment");
 var ProfileModel = require("../models/profile");
+var ReplyModel = require("../models/reply");
 var cors = require("cors");
 const { ConnectionStates } = require("mongoose");
 var path = require("path");
@@ -318,7 +319,11 @@ router.post("/getDetailBoard", async function (req, res) {
     console.log("boardComments: ");
     console.log(boardComments);
 
-    let d = { detailBoard, boardComments };
+    let boardReplies = await ReplyModel.find({ board_id: id });
+    console.log("boardReplies: ");
+    console.log(boardReplies);
+
+    let d = { detailBoard, boardComments, boardReplies };
 
     res.status(200).send(d);
   } catch (err) {
@@ -512,6 +517,32 @@ router.post("/searchHobby", async function (req, res) {
     console.log(searched);
 
     res.send(searched);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/postReply", async function (req, res) {
+  console.log(
+    "postReply post 호출" +
+      req.body.reply +
+      req.body.comment_id +
+      req.body.boardId
+  );
+  try {
+    let reply = new ReplyModel({
+      reply_content: req.body.reply,
+      writer: req.session.user.id,
+      board_id: req.body.boardId,
+      comment_id: req.body.comment_id,
+    });
+
+    await reply.save();
+
+    let replies = await ReplyModel.find({ comment_id: req.body.comment_id });
+    console.log(replies);
+    console.log("답글 작성 완료");
+    res.redirect("http://localhost:3000/detailBoard/" + req.body.boardId);
   } catch (err) {
     console.log(err);
   }

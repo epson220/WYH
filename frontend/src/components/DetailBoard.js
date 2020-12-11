@@ -22,8 +22,11 @@ const DetailBoard = ({ match }) => {
   const [Comments, setComments] = useState([]);
   const [Imgurl, setImgurl] = useState("");
   const [Comment, setComment] = useState("");
+  const [reply, setReply] = useState("");
+  const [Replies, setReplies] = useState([]);
 
   const onChangeComment = (e) => setComment(e.target.value);
+  const onChangeReply = (e) => setReply(e.target.value);
 
   console.dir(match.params);
   console.log("board_id : " + board_id);
@@ -39,6 +42,7 @@ const DetailBoard = ({ match }) => {
       setBoard(res.data.detailBoard);
       console.log(Board);
       setComments(res.data.boardComments);
+      setReplies(res.data.boardReplies);
       if (
         res.data.detailBoard.picture != "" &&
         res.data.detailBoard.picture != null
@@ -54,6 +58,17 @@ const DetailBoard = ({ match }) => {
     }
     fetchData();
   }, []);
+
+  const handleReply = async (id) => {
+    const c_id = id;
+    async function fetchReplies(cid) {
+      console.log("fetch reply axios 호출");
+      const result = await axios.post("http://localhost:3001/postReply");
+      console.log(result);
+      setReplies(result);
+    }
+    fetchReplies(c_id);
+  };
 
   return (
     <>
@@ -87,7 +102,27 @@ const DetailBoard = ({ match }) => {
         <ol>
           {Comments.map((c) => (
             <li key={c._id}>
-              {c.input} <Link to={`/profile/${c.writer}`}>{c.writer}</Link>
+              {c.input} <Link to={`/profile/${c.writer}`}>{c.writer}</Link>{" "}
+              {Replies.map((re) => {
+                if (re.comment_id == c._id) {
+                  return (
+                    <div key={re._id}>
+                      - {re.reply_content}{" "}
+                      <Link to={`/profile/${re.writer}`}>{re.writer}</Link>
+                    </div>
+                  );
+                }
+              })}
+              <form method="post" action="http://localhost:3001/postReply">
+                <input type="text" name="reply"></input>
+                <input type="hidden" name="comment_id" value={c._id}></input>
+                <input type="hidden" name="boardId" value={Board._id}></input>
+                <input type="hidden" name="writer"></input>
+                <button type="submit">답글작성</button>
+              </form>
+              {/* <input type="text" value={reply} onChange={onChangeReply}></input>
+              <input type="hidden" value={c._id}></input>
+              <button onClick={() => handleReply(c._id)}>답글작성</button> */}
             </li>
           ))}
         </ol>
