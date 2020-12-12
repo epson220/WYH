@@ -548,4 +548,35 @@ router.post("/postReply", async function (req, res) {
   }
 });
 
+router.get("/myboard", async function (req, res) {
+  console.log("/myboard get 호출");
+
+  try {
+    let myBoards = await BoardModel.find({ writer: req.session.user.id });
+    console.log(myBoards);
+
+    res.send(myBoards);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post("/deleteBoard", async function (req, res) {
+  console.log("/deleteBoard post 호출" + req.body.boardId);
+
+  try {
+    let deleted = await BoardModel.remove({ _id: req.body.boardId });
+    console.log(deleted);
+
+    let myboards = await BoardModel.find({ writer: req.session.user.id });
+    console.log(myboards);
+
+    res.send(myboards);
+
+    //res.redirect("http://localhost:3000/myPage");
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;

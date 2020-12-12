@@ -110,6 +110,9 @@ const Board = () => {
         게시글검색
       </button>
       {/* </form> */}
+      <button>
+        <Link to="/myPage">마이페이지</Link>
+      </button>
 
       <ol>
         {response.map((res) => (
